@@ -14,7 +14,7 @@ public class ConsoleTaskView : ITaskView {
  
   string Prompt(string prompt) { 
     Console.Write(prompt); 
-    return Console.ReadLine(); 
+    return Console.ReadLine()!; 
   } 
  
   public void Run() { 
