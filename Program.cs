@@ -1,6 +1,4 @@
-﻿using System;
-
-class Program { 
+﻿class Program { 
    static void Main(string[] args){ 
     // Dependency injection: wiring up our components 
     string filePath = "tasks.json"; 
