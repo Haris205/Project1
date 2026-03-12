@@ -1,7 +1,17 @@
-public class Array<T> : IMyCollection<T>
+public class MyArray<T> : IMyCollection<T>
 {
-    public int Count { get; }
-    public bool Dirty {get; set;}
+    private T[] _items;
+    private int _count;
+
+    public bool Dirty { get; set; }
+
+    public int Count => _count;
+
+    public MyArray(int capacity = 10)
+    {
+        _items = new T[capacity];
+        _count = 0;
+    }
     public void Add(T item)
     {
         
