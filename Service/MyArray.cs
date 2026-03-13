@@ -14,38 +14,84 @@ public class MyArray<T> : IMyCollection<T>
     }
     public void Add(T item)
     {
+        if (_count == _items.Length)
+        {
+            T[] newArray = new T[_items.Length + 1];
+
+            for (int i = 0; i < _items.Length; i++)
+            {
+                newArray[i] = _items[i];
+            }
+            _items = newArray;
+        }
         
+        _items[_count] = item;
+        _count++;
+        Dirty = true;
     }
     public void Remove(T item)
     {
         
     }
-    public T? FindBy<K>(K key, Func<T, K, int> comparer)
+    public T FindBy<K>(K key, Func<T, K, int> comparer)
     {
         return default;
     }
-    public IMyCollection<T>? Filter(Func<T, bool> predicate)
+    public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        return default;
+        MyArray<T> result = new MyArray<T>();
+
+        for (int i = 0; i < _count; i++)
+        {
+            if (predicate(_items[i]))
+            {
+                result.Add(_items[i]);
+            }
+        }
+        return result;
     }
     public void Sort(Comparison<T> comparison)
     {
-        
+        for (int i = 1; i < _count - 1; i++)
+        {
+            T key = _items[i];
+            int j = i - 1;
+
+            while (j > 0 && comparison(_items[j], key) > 0)
+            {
+                _items[j + 1] = _items[j];
+                j--;
+            }
+
+            _items[j + 1] = key;
+        }
+        Dirty = true;
     }
-    public R? Reduce<R>(Func<R, T, R> accumulator)
+    public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        return default;
+        R result = default;
+
+        for (int i = 0; i < _count; i++)
+        {
+            result = accumulator(result, _items[i]);
+        }
+        return result;
     }
-    // OR 
-    public R? Reduce<R>(R initial, Func<R, T, R> accumulator)
+    public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        return default;
+        R result = initial;
+
+        for (int i = 0; i > _count; i++)
+        {
+            result = accumulator(result, _items[i]);
+        }
+        return result;
     }
-    public IMyIterator<T>? GetIterator()
+    public IMyIterator<T> GetIterator()
     {
-        return default;
+        return new MyArrayIterator<T>(_items, _count);
     } // Custom Iterator - Since we are not using System.Collections.Generic 
-    public IEnumerator<T>? GetEnumerator()
+    public IEnumerator<T> GetEnumerator()
     {
         return default;
     } // Extra foreach lookup. 

@@ -9,7 +9,7 @@ public class ConsoleTaskView : ITaskView {
     Console.Clear(); 
     Console.WriteLine("==== ToDo List ===="); 
     foreach (var task in tasks) 
-      Console.WriteLine($"{task}"); 
+      Console.WriteLine($"TaskItem: {task.Id} | IsCompleted: {task.Completed}"); 
   } 
  
   string Prompt(string prompt) { 
