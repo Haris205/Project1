@@ -1,0 +1,29 @@
+2026-03-13T11:10:11.2946386+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 2.1.0+26fb0d3e539b7900114443db5edf1e0c4e9d4b82
+2026-03-13T11:10:11.3241256+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-03-13T11:10:11.3257257+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-03-13T11:10:11.3257371+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 11:10:11.260
+2026-03-13T11:10:11.3258721+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 19248
+2026-03-13T11:10:11.3259179+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 10.0.3
+2026-03-13T11:10:11.3259447+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\10.0.3\System.Private.CoreLib.dll
+2026-03-13T11:10:11.3260625+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-03-13T11:10:11.3262593+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\Project1.Tests.dll
+2026-03-13T11:10:11.3265482+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\Log --client-port 63053'
+2026-03-13T11:10:11.3278213+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-03-13T11:10:11.3803364+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-03-13T11:10:11.4003136+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable: 
+2026-03-13T11:10:11.7102426+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: 'MSTest.Sdk' Version: '4.1.0' DisplayName: 'MSTest' Description: 'MSTest Framework for Microsoft Testing Platform'
+2026-03-13T11:10:11.7212112+00:00 Microsoft.Testing.Extensions.VSTestBridge.ObjectModel.MessageLoggerAdapter WARNING Runsettings datacollectors are not supported by Microsoft.Testing.Platform and will be ignored
+2026-03-13T11:10:11.7572209+00:00 mstest-trace INFORMATION MSTestExecutor.RunTests: Running tests from sources.
+2026-03-13T11:10:11.7706831+00:00 mstest-trace INFORMATION DesktopTestSourceHost.GetResolutionPaths(): Not running in portable mode
+2026-03-13T11:10:11.7708469+00:00 mstest-trace INFORMATION DesktopTestSourceHost.SetupHost(): Creating assembly resolver with resolution paths C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0.
+2026-03-13T11:10:11.8009259+00:00 mstest-trace INFORMATION MSTestDiscoverer: Found 1 tests from source C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\Project1.Tests.dll
+2026-03-13T11:10:11.8274353+00:00 mstest-trace INFORMATION DesktopTestSourceHost.GetResolutionPaths(): Not running in portable mode
+2026-03-13T11:10:11.8274829+00:00 mstest-trace INFORMATION DesktopTestSourceHost.SetupHost(): Creating assembly resolver with resolution paths C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0.
+2026-03-13T11:10:11.8275525+00:00 mstest-trace INFORMATION Created unit-test runner C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\Project1.Tests.dll
+2026-03-13T11:10:11.8356091+00:00 Microsoft.Testing.Extensions.VSTestBridge.ObjectModel.MessageLoggerAdapter INFORMATION Test Parallelization enabled for C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\Project1.Tests.dll (Workers: 16, Scope: MethodLevel)
+2026-03-13T11:10:11.8523971+00:00 mstest-trace INFORMATION Executing test TestMethod1
+2026-03-13T11:10:11.8880193+00:00 mstest-trace INFORMATION Executed test TestMethod1
+2026-03-13T11:10:11.8970278+00:00 mstest-trace INFORMATION Executed tests belonging to source C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\Project1.Tests.dll
+2026-03-13T11:10:11.8984712+00:00 mstest-trace INFORMATION Deleting deployment directory C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\TestResults\Deploy_haris_zub3pcb 20260313T121011_19248
+2026-03-13T11:10:11.9491993+00:00 mstest-trace INFORMATION Deleted deployment directory C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net10.0\TestResults\Deploy_haris_zub3pcb 20260313T121011_19248
+2026-03-13T11:10:15.0245361+00:00 Microsoft.Testing.Extensions.Telemetry.AppInsightsProvider WARNING Telemetry task didn't flush after '3', some payload could be lost
