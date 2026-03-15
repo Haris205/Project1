@@ -10,7 +10,7 @@ public class JsonTaskRepository : ITaskRepository {
       return result; 
     } 
     string json = File.ReadAllText(_filePath); 
-    var tasks = JsonSerializer.Deserialize<List<TaskItem>>(json); 
+    var tasks = JsonSerializer.Deserialize<TaskItem[]>(json); 
     if (tasks != null)
     {
       foreach (var task in tasks)
@@ -22,15 +22,8 @@ public class JsonTaskRepository : ITaskRepository {
   }
   public void SaveTasks(IMyCollection<TaskItem> tasks)
   {
-    var list = new List<TaskItem>();
-    var iterator = tasks.GetIterator();
-
-    while (iterator.HasNext())
-    {
-      list.Add(iterator.Next());
-    }
-
-    string json = JsonSerializer.Serialize(list,
+    var array = ((MyArray<TaskItem>) tasks).ToArray();
+    string json = JsonSerializer.Serialize(array,
       new JsonSerializerOptions { WriteIndented = true });
     File.WriteAllText(_filePath, json);
   }
