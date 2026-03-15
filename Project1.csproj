@@ -2,18 +2,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Tests\**" />
-    <Compile Remove="Interfaces\UnitTest\**" />
     <Content Remove="Tests\**" />
-    <Content Remove="Interfaces\UnitTest\**" />
     <EmbeddedResource Remove="Tests\**" />
-    <EmbeddedResource Remove="Interfaces\UnitTest\**" />
     <None Remove="Tests\**" />
-    <None Remove="Interfaces\UnitTest\**" />
   </ItemGroup>
 </Project>

@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj": {}
+    "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj": {}
   },
   "projects": {
-    "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj": {
+    "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj",
+        "projectUniqueName": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj",
         "projectName": "Project1",
-        "projectPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj",
-        "packagesPath": "C:\\Users\\lolox\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\obj\\",
+        "projectPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj",
+        "packagesPath": "C:\\Users\\haris_zub3pcb\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\lolox\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\haris_zub3pcb\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

@@ -1,18 +1,18 @@
-<Project Sdk="MSTest.Sdk">
+<Project Sdk="MSTest.Sdk/3.8.3">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Exe</OutputType>
+    <EnableMSTestRunner>true</EnableMSTestRunner>
+    <TestingPlatformDotnetTestSupport>true</TestingPlatformDotnetTestSupport>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.4.0" />
-    <PackageReference Include="MSTest" Version="3.4.0" />
+    <PackageReference Include="Microsoft.Testing.Platform.MSBuild" Version="1.6.3" />
+    <PackageReference Include="MSTest" Version="3.8.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Project1.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\Interfaces\UnitTest\MyArrayTest.cs" />
   </ItemGroup>
 </Project>
