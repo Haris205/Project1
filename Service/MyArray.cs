@@ -52,12 +52,12 @@ public class MyArray<T> : IMyCollection<T>
     }
     public void Sort(Comparison<T> comparison)
     {
-        for (int i = 1; i < _count - 1; i++)
+        for (int i = 1; i < _count; i++)
         {
             T key = _items[i];
             int j = i - 1;
 
-            while (j > 0 && comparison(_items[j], key) > 0)
+            while (j >= 0 && comparison(_items[j], key) > 0)
             {
                 _items[j + 1] = _items[j];
                 j--;
@@ -81,7 +81,7 @@ public class MyArray<T> : IMyCollection<T>
     {
         R result = initial;
 
-        for (int i = 0; i > _count; i++)
+        for (int i = 0; i < _count; i++)
         {
             result = accumulator(result, _items[i]);
         }
