@@ -116,9 +116,10 @@ public class MyArray<T> : IMyCollection<T>
     } // Custom Iterator - Since we are not using System.Collections.Generic 
     public IEnumerator<T> GetEnumerator()
     {
-        for (int i = 0; i < _count; i++)
+        var iterator = GetIterator();
+        while (iterator.HasNext())
         {
-            yield return _items[i];
+            yield return iterator.Next();
         }
     } // Extra foreach lookup. 
 }

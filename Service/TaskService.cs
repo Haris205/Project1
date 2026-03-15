@@ -12,7 +12,18 @@ public class TaskService : ITaskService {
       _tasks.Add(task);
     }
   }
-  public IEnumerable<TaskItem> GetAllTasks() => _tasks.GetEnumerator() as IEnumerable<TaskItem>; 
+  public IEnumerable<TaskItem> GetAllTasks()
+  {
+    var result = new List<TaskItem>();
+    var iterator = _tasks.GetIterator();
+
+    while (iterator.HasNext())
+    {
+      result.Add(iterator.Next());
+    }
+
+    return result;
+  }
   public void AddTask(string description)
   { 
     int maxId = _tasks.Reduce(0, (max, t) => t.Id > max ? t.Id : max);
