@@ -31,10 +31,33 @@ public class MyArray<T> : IMyCollection<T>
     }
     public void Remove(T item)
     {
-        
+        int index = -1;
+        for (int i = 0; i < _count; i++)
+        {
+            if (Equals(_items[i], item))
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1)
+            return;
+        for (int i = index; i < _count - 1; i++)
+        {
+            _items[i] = _items[i + 1];
+        }
+        _count--;
+        Dirty = true;
     }
     public T FindBy<K>(K key, Func<T, K, int> comparer)
     {
+        for (int i = 0; i < _count; i++)
+        {
+            if (comparer(_items[i], key) == 0)
+            {
+                return _items[i];
+            }
+        }
         return default;
     }
     public IMyCollection<T> Filter(Func<T, bool> predicate)
@@ -93,6 +116,9 @@ public class MyArray<T> : IMyCollection<T>
     } // Custom Iterator - Since we are not using System.Collections.Generic 
     public IEnumerator<T> GetEnumerator()
     {
-        return default;
+        for (int i = 0; i < _count; i++)
+        {
+            yield return _items[i];
+        }
     } // Extra foreach lookup. 
 }
