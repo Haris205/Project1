@@ -14,8 +14,9 @@ public class MyLinkedList<T> : IMyCollection<T>
     
     private Node? _head;
     public bool Dirty { get; set; }
+    private int _count;
     public int Count => _count;
-    
+
     public void Add(T item)
     {
         
