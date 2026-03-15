@@ -121,5 +121,15 @@ public class MyArray<T> : IMyCollection<T>
         {
             yield return iterator.Next();
         }
-    } // Extra foreach lookup. 
+    } // Extra foreach lookup.
+
+    public T[] ToArray()
+    {
+        T[] result = new T[_count];
+        for (int i = 0; i < _count; i++)
+        {
+            result[i] = _items[i];
+        }
+        return result;
+    }
 }
