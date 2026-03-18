@@ -58,7 +58,7 @@ public class MyArray<T> : IMyCollection<T>
                 return _items[i];
             }
         }
-        return default;
+        return default!;
     }
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
@@ -92,7 +92,7 @@ public class MyArray<T> : IMyCollection<T>
     }
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        R result = default;
+        R result = default!;
 
         for (int i = 0; i < _count; i++)
         {
@@ -113,7 +113,7 @@ public class MyArray<T> : IMyCollection<T>
     public IMyIterator<T> GetIterator()
     {
         return new MyArrayIterator<T>(_items, _count);
-    } // Custom Iterator - Since we are not using System.Collections.Generic 
+    }
     public IEnumerator<T> GetEnumerator()
     {
         var iterator = GetIterator();
@@ -121,7 +121,7 @@ public class MyArray<T> : IMyCollection<T>
         {
             yield return iterator.Next();
         }
-    } // Extra foreach lookup.
+    }
 
     public T[] ToArray()
     {

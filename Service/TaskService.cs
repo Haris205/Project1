@@ -31,6 +31,15 @@ public class TaskService : ITaskService {
     var newTask = new TaskItem { Id = maxId + 1, Description = description, Completed = false }; 
     _tasks.Add(newTask); 
     _repository.SaveTasks(_tasks);
+  }
+  public void UpdateTask(int id, string description)
+  {
+    var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
+    if (task != null)
+    {
+      task.Description = description;
+      _repository.SaveTasks(_tasks); 
+    }
   } 
   public void RemoveTask(int id) { 
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id)); 
