@@ -14,7 +14,7 @@ public class TaskService : ITaskService {
   }
   public IEnumerable<TaskItem> GetAllTasks()
   {
-    var result = new List<TaskItem>();
+    var result = new MyArray<TaskItem>();
     var iterator = _tasks.GetIterator();
 
     while (iterator.HasNext())
@@ -22,7 +22,7 @@ public class TaskService : ITaskService {
       result.Add(iterator.Next());
     }
 
-    return result;
+    return result.ToArray();
   }
   public void AddTask(string description)
   { 
