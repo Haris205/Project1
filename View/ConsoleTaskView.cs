@@ -9,7 +9,7 @@ public class ConsoleTaskView : ITaskView {
     Console.Clear(); 
     Console.WriteLine("==== ToDo List ===="); 
     foreach (var task in tasks) 
-      Console.WriteLine($"TaskItem: {task.Id} | IsCompleted: {task.Completed}"); 
+      Console.WriteLine($"TaskItem: {task.Id} | Completed: {task.Completed}"); 
   } 
  
   string Prompt(string prompt) { 
@@ -21,30 +21,38 @@ public class ConsoleTaskView : ITaskView {
     while (true) { 
       DisplayTasks(_service.GetAllTasks()); 
       Console.WriteLine("\nOptions:"); 
-      Console.WriteLine("1. Add Task"); 
-      Console.WriteLine("2. Remove Task"); 
-      Console.WriteLine("3. Toggle Task State"); 
-      Console.WriteLine("4. Exit"); 
+      Console.WriteLine("1. Add Task");
+      Console.WriteLine("2. Update Task"); 
+      Console.WriteLine("3. Remove Task"); 
+      Console.WriteLine("4. Toggle Task State"); 
+      Console.WriteLine("5. Exit"); 
  
       string option=Prompt("Select an option: "); 
-      switch (option) { 
-        case "1": 
-         string description = Prompt ("Enter task description: "); 
-          _service.AddTask(description); 
-          break; 
-        case "2": 
+      switch (option) {
+        case "1":
+         string addDescription = Prompt ("Enter task description: "); 
+          _service.AddTask(addDescription); 
+          break;
+        case "2":
+          string updateIdStr = Prompt ("Enter task id to update: ");
+          if (int.TryParse(updateIdStr, out int updateId)) { 
+            string updateDescription = Prompt ("Enter new task description: ");
+            _service.UpdateTask(updateId, updateDescription); 
+          }
+          break;
+        case "3":
         string removeIdStr = Prompt ("Enter task id to remove: ");
          if (int.TryParse(removeIdStr, out int removeId)) { 
             _service.RemoveTask(removeId); 
           } 
-          break; 
-        case "3": 
+          break;
+        case "4":
         string toggleIdStr = Prompt ("Enter task id to toggle: "); 
           if (int.TryParse(toggleIdStr, out int toggleId)) { 
             _service.ToggleTaskCompletion(toggleId); 
           } 
-          break; 
-        case "4": 
+          break;
+        case "5":
           return; 
         default: 
           Console.WriteLine("Invalid option. Press any key to continue..."); 
