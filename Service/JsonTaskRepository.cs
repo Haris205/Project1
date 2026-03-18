@@ -7,7 +7,7 @@ public class JsonTaskRepository : ITaskRepository {
   public IMyCollection<TaskItem> LoadTasks() {
     var result = new MyArray<TaskItem>();
     if (!File.Exists(_filePath)) { 
-      return result; 
+      return result;
     } 
     string json = File.ReadAllText(_filePath); 
     var tasks = JsonSerializer.Deserialize<TaskItem[]>(json); 
