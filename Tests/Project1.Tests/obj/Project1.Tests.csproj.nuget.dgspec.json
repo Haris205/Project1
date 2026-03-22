@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj": {}
+    "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj": {
+    "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj",
+        "projectUniqueName": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj",
         "projectName": "Project1",
-        "projectPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj",
-        "packagesPath": "C:\\Users\\haris_zub3pcb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\obj\\",
+        "projectPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj",
+        "packagesPath": "C:\\Users\\lolox\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\haris_zub3pcb\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\lolox\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -81,30 +83,32 @@
         }
       }
     },
-    "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj": {
+    "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj",
+        "projectUniqueName": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj",
         "projectName": "Project1.Tests",
-        "projectPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj",
-        "packagesPath": "C:\\Users\\haris_zub3pcb\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Tests\\Project1.Tests\\obj\\",
+        "projectPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Tests\\Project1.Tests\\Project1.Tests.csproj",
+        "packagesPath": "C:\\Users\\lolox\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Tests\\Project1.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\haris_zub3pcb\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\lolox\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj": {
-                "projectPath": "C:\\Users\\haris_zub3pcb\\Documents\\GitHub\\Project1\\Project1.csproj"
+              "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj": {
+                "projectPath": "C:\\Users\\lolox\\OneDrive\\Escritorio\\Project1\\Project1.csproj"
               }
             }
           }
