@@ -1,21 +1,28 @@
 public class TaskService : ITaskService
 {
   private readonly ITaskRepository _repository;
-  private readonly IMyCollection<TaskItem> _tasks;
-  public TaskService(ITaskRepository repository)
+  private IMyCollection<TaskItem> _tasks = null!;
+  private CollectionType _collectionType;
+  public TaskService(ITaskRepository repository, CollectionType type)
   {
     _repository = repository;
-    var loaded = _repository.LoadTasks();
-    _tasks = new MyArray<TaskItem>();
+    SetCollectionType(type);
+  }
+  public IMyCollection<TaskItem> GetTaskAsCollection() => _tasks;
+  public void SetCollectionType(CollectionType type)
+  {
+    _collectionType = type;
 
+    _tasks = CollectionFactory.Create<TaskItem>(type);
+    var loaded = _repository.LoadTasks(type);
     foreach (var task in loaded)
     {
       _tasks.Add(task);
     }
   }
-  public IEnumerable<TaskItem> GetAllTasks()
+  public IMyCollection<TaskItem> GetAllTasks()
   {
-    var result = new MyArray<TaskItem>();
+    var result = CollectionFactory.Create<TaskItem>(_collectionType);
     var iterator = _tasks.GetIterator();
 
     while (iterator.HasNext())
@@ -23,7 +30,7 @@ public class TaskService : ITaskService
       result.Add(iterator.Next());
     }
 
-    return result.ToArray();
+    return result;
   }
   public void AddTask(string description, PriorityLevel priority)
   { 
@@ -58,5 +65,9 @@ public class TaskService : ITaskService
       task.Completed = !task.Completed;
       _repository.SaveTasks(_tasks);
     }
+  }
+  public IMyCollection<TaskItem> FilterTasks(IMyCollection<TaskItem> tasks, Func<TaskItem, bool> predicate)
+  {
+    return tasks.Filter(predicate);
   }
 }

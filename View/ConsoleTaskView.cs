@@ -1,38 +1,61 @@
-public class ConsoleTaskView : ITaskView { 
+public class ConsoleTaskView : ITaskView
+{ 
   private readonly ITaskService _service; 
  
   public ConsoleTaskView(ITaskService service) { 
     _service = service; 
   } 
- 
-  void DisplayTasks(IEnumerable<TaskItem> tasks) { 
+  void DisplayTasks(IMyCollection<TaskItem> tasks) { 
     Console.Clear(); 
-    Console.WriteLine("==== ToDo List ===="); 
-    foreach (var task in tasks) 
+    Console.WriteLine("==== ToDo List ====");
+    var iterator = tasks.GetIterator();
+    while (iterator.HasNext())
+    {
+      var task = iterator.Next();
       Console.WriteLine($"TaskItem: {task.Id} | Completed: {task.Completed}"); 
+    }
   } 
  
-  void FilterDisplayTasks(IEnumerable<TaskItem> tasks) { 
+  void FilterDisplayTasks(IMyCollection<TaskItem> tasks) { 
     Console.Clear(); 
     Console.WriteLine("1. Priority\n2. Status\n3. Created at");
     string question = Console.ReadLine()!;
-    Console.WriteLine("==== Filtered ToDo List ===="); 
+    Console.WriteLine("==== Filtered ToDo List ====");
+
+    IMyCollection<TaskItem> filtered;
+
     if(question == "1")
     {
-      foreach(var task in tasks)
+      filtered = _service.FilterTasks(tasks, _ => true);
+      filtered.Sort((a, b) => b.Priority.CompareTo(a.Priority));
+      var iterator = filtered.GetIterator();
+      while (iterator.HasNext())
       {
+        var task = iterator.Next();
         Console.WriteLine($"TaskItem: {task.Id} | Priority: {task.Priority}");
       }
     }
     else if(question == "2")
     {
-      foreach (var task in tasks) 
-        Console.WriteLine($"TaskItem: {task.Id} | Status: {task.Completed}"); 
+      filtered = _service.FilterTasks(tasks, _ => true);
+      filtered.Sort((a, b) => a.Completed.CompareTo(b.Completed));
+      var iterator = filtered.GetIterator();
+      while (iterator.HasNext())
+      {
+        var task = iterator.Next();
+        Console.WriteLine($"TaskItem: {task.Id} | Status: {task.Completed}");
+      }
     }
     else if(question == "3")
     {
-      foreach (var task in tasks) 
-        Console.WriteLine($"TaskItem: {task.Id} | Created at: {task.CreatedAt:yyyy-MM-dd HH:mm}"); 
+      filtered = _service.FilterTasks(tasks, _ => true);
+      filtered.Sort((a, b) => a.CreatedAt.CompareTo(b.CreatedAt));
+      var iterator = filtered.GetIterator();
+      while (iterator.HasNext())
+      {
+        var task = iterator.Next();
+        Console.WriteLine($"TaskItem: {task.Id} | Created at: {task.CreatedAt:yyyy-MM-dd HH:mm}");
+      }    
     }
     else { 
       Console.WriteLine("Invalid option. Press any key to go back to the menu");
@@ -46,10 +69,23 @@ public class ConsoleTaskView : ITaskView {
     Console.Write(prompt); 
     return Console.ReadLine()!; 
   } 
-  public void Run() { 
+  public void Run() {
+
+    Console.WriteLine("Choose a data structure:");
+    Console.WriteLine("1. Array\n2. LinkedList\n");
+
+    CollectionType chosenType = Console.ReadLine() switch
+    {
+      "1" => CollectionType.Array,
+      "2" => CollectionType.LinkedList,
+      _ => CollectionType.Array
+    };
+
+    _service.SetCollectionType(chosenType);
+
     while (true) { 
       var tasks = _service.GetAllTasks();
-      DisplayTasks(tasks); 
+      DisplayTasks(tasks);
       Console.WriteLine("\nOptions:"); 
       Console.WriteLine("1. Add Task");
       Console.WriteLine("2. Update Task"); 
@@ -62,8 +98,8 @@ public class ConsoleTaskView : ITaskView {
       switch (option)
       {
         case "1":
-              string addDescription = Prompt("Enter task description:");
-              string priorityInput = Prompt("Enter task priority:\n1.Low\n2.Medium\n3.High");
+              string addDescription = Prompt("\nEnter task description:");
+              string priorityInput = Prompt("\nEnter task priority:\n1.Low\n2.Medium\n3.High\n");
               PriorityLevel priority;
               switch (priorityInput)
               {

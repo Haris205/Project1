@@ -4,8 +4,8 @@ public class JsonTaskRepository : ITaskRepository {
   private readonly string _filePath; 
   public JsonTaskRepository(string filePath) => _filePath = filePath; 
  
-  public IMyCollection<TaskItem> LoadTasks() {
-    var result = new MyArray<TaskItem>();
+  public IMyCollection<TaskItem> LoadTasks(CollectionType type) {
+    var result = CollectionFactory.Create<TaskItem>(type);
     if (!File.Exists(_filePath)) { 
       return result;
     } 
