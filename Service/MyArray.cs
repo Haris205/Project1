@@ -127,7 +127,7 @@ public class MyArray<T> : IMyCollection<T>
     {
         T[] result = new T[_count];
         for (int i = 0; i < _count; i++)
-        {
+        { 
             result[i] = _items[i];
         }
         return result;
