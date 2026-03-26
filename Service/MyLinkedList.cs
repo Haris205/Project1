@@ -19,7 +19,13 @@ public class MyLinkedList<T> : IMyCollection<T>
 
     public void Add(T item)
     {
-        
+        if(item == null)
+            return;
+        Node newNode = new Node(item); 
+        newNode.Next = _head;
+        _head = newNode;      
+        _count++;
+        Dirty = true;   
     }
     public void Remove(T item)
     {
@@ -38,7 +44,14 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
     public T FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        return default!;
+        Node? current = _head;
+        while (current != null)
+        {
+            if (comparer(current.Value, key) == 0)
+                return current.Value;
+            current = current.Next;
+        }
+        throw new InvalidOperationException("Element not found");
     }
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
@@ -53,7 +66,7 @@ public class MyLinkedList<T> : IMyCollection<T>
         }
         return result;
     }
-    public void Sort(Comparison<T> comparison)
+    public void Sort(Comparison<T> comparison) //
     {
         _head = MergeSort(_head!, comparison);
         Dirty = true;
@@ -101,17 +114,31 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        return default!;
+        Node? current = _head;
+        R initial = default;
+        while(current != null)
+        {
+            initial = accumulator(initial, current.Value);
+            current = current.Next;
+        }
+        return initial;
     }
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        return default!;
+        Node? current = _head;
+        R result = initial;
+        while(current != null)
+        {
+            result = accumulator(result, current.Value);
+            current = current.Next;
+        }
+        return result;
     }
-    public IMyIterator<T> GetIterator()
+    public IMyIterator<T> GetIterator() // 
     {
         return new MyLinkedListIterator<T>(this);
     }
-    public IEnumerator<T> GetEnumerator()
+    public IEnumerator<T> GetEnumerator() // 
     {
         return default!;
     }
