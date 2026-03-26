@@ -1,0 +1,37 @@
+2026-03-26T14:51:41.9764750+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.6.3+5354e77dc47f233239dfddf6d2be620b9e14b171
+2026-03-26T14:51:41.9945988+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-03-26T14:51:41.9960358+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-03-26T14:51:41.9960449+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 14:51:41.938
+2026-03-26T14:51:41.9984683+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 4228
+2026-03-26T14:51:41.9986450+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 8.0.12
+2026-03-26T14:51:41.9986585+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.12\System.Private.CoreLib.dll
+2026-03-26T14:51:41.9986681+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-03-26T14:51:41.9986710+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll
+2026-03-26T14:51:41.9991560+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Log --client-port 53884'
+2026-03-26T14:51:42.0012238+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-03-26T14:51:42.0309068+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-03-26T14:51:42.0370864+00:00 Microsoft.Testing.Platform.Configurations.JsonConfigurationSource+JsonConfigurationProvider INFORMATION Config file 'C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.testconfig.json' loaded.
+2026-03-26T14:51:42.0576399+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable:  VSTest mode: False
+2026-03-26T14:51:42.2634829+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: 'MSTest.Sdk' Version: '3.8.3' DisplayName: 'MSTest' Description: 'MSTest Framework for Microsoft Testing Platform'
+2026-03-26T14:51:42.2719569+00:00 Microsoft.Testing.Extensions.VSTestBridge.ObjectModel.MessageLoggerAdapter WARNING Runsettings datacollectors are not supported by Microsoft.Testing.Platform and will be ignored
+2026-03-26T14:51:42.3175063+00:00 mstest-trace INFORMATION MSTestExecutor.RunTests: Running tests from sources.
+2026-03-26T14:51:42.3219198+00:00 mstest-trace INFORMATION CollectSourceInformation value found : True 
+2026-03-26T14:51:42.3551093+00:00 mstest-trace INFORMATION MSTestDiscoverer: Found 26 tests from source C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll
+2026-03-26T14:51:42.4102180+00:00 mstest-trace INFORMATION Created unit-test runner C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll
+2026-03-26T14:51:42.4168779+00:00 Microsoft.Testing.Extensions.VSTestBridge.ObjectModel.MessageLoggerAdapter INFORMATION Test Parallelization enabled for C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll (Workers: 16, Scope: MethodLevel)
+2026-03-26T14:51:42.4281117+00:00 mstest-trace INFORMATION Executing test GetEnumerator_OrderIsLifo_Test
+2026-03-26T14:51:42.4281177+00:00 mstest-trace INFORMATION Executing test Remove_ExistingItem_DecreasesCount_Test
+2026-03-26T14:51:42.4281288+00:00 mstest-trace INFORMATION Executing test Filter_Test
+2026-03-26T14:51:42.4281278+00:00 mstest-trace INFORMATION Executing test Remove_NonExistingItem_NoChange_Test
+2026-03-26T14:51:42.4281351+00:00 mstest-trace INFORMATION Executing test AddAndCount_Test
+2026-03-26T14:51:42.4281276+00:00 mstest-trace INFORMATION Executing test Reduce_Test
+2026-03-26T14:51:42.4281687+00:00 mstest-trace INFORMATION Executing test Sort_Test
+2026-03-26T14:51:42.5330342+00:00 mstest-trace INFORMATION Executed test Remove_ExistingItem_DecreasesCount_Test
+2026-03-26T14:51:42.5330413+00:00 mstest-trace INFORMATION Executed test GetEnumerator_OrderIsLifo_Test
+2026-03-26T14:51:42.5330342+00:00 mstest-trace INFORMATION Executed test Sort_Test
+2026-03-26T14:51:42.5330345+00:00 mstest-trace INFORMATION Executed test Remove_NonExistingItem_NoChange_Test
+2026-03-26T14:51:42.5330708+00:00 mstest-trace INFORMATION Executed test Filter_Test
+2026-03-26T14:51:42.5330534+00:00 mstest-trace INFORMATION Executed test Reduce_Test
+2026-03-26T14:51:42.5330345+00:00 mstest-trace INFORMATION Executed test AddAndCount_Test
+2026-03-26T14:51:42.5399146+00:00 mstest-trace INFORMATION Executed tests belonging to source C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll
+2026-03-26T14:51:45.6165668+00:00 Microsoft.Testing.Extensions.Telemetry.AppInsightsProvider WARNING Telemetry task didn't flush after '3', some payload could be lost
