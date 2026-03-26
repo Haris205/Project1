@@ -30,17 +30,30 @@ public class MyLinkedList<T> : IMyCollection<T>
     public void Remove(T item)
     {
         while (_head != null && _head.Value!.Equals(item))
+        {
             _head = _head.Next;
+            _count--;
+            Dirty = true;
+        }
 
-        Node current = _head!;
+        Node? current = _head;
+        Node? previous = null;
+
         while (current != null)
         {
-            if (current?.Next != null && current.Next!.Value!.Equals(item))
-                current.Next = current!.Next!.Next!;
+            if (current.Value!.Equals(item))
+            {
+                previous!.Next = current.Next;
+                _count--;
+                Dirty = true;
+                current = current.Next;
+            }
             else
-                current = current!.Next!;
+            {
+                previous = current;
+                current = current.Next;
+            }
         }
-        Dirty = true;
     }
     public T FindBy<K>(K key, Func<T, K, int> comparer)
     {
@@ -57,18 +70,21 @@ public class MyLinkedList<T> : IMyCollection<T>
     {
         MyLinkedList<T> result = new MyLinkedList<T>();
 
-        Node current = _head!;
+        Node? current = _head;
         while (current != null)
         {
             if (predicate(current.Value))
                 result.Add(current.Value);
-            current = current.Next!;
+            current = current.Next;
         }
         return result;
     }
-    public void Sort(Comparison<T> comparison) //
+    public void Sort(Comparison<T> comparison)
     {
-        _head = MergeSort(_head!, comparison);
+        if (_head == null)
+            return;
+
+        _head = MergeSort(_head, comparison);
         Dirty = true;
     }
     private Node MergeSort(Node node, Comparison<T> comparison)
@@ -115,7 +131,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
         Node? current = _head;
-        R initial = default;
+        R initial = default!;
         while(current != null)
         {
             initial = accumulator(initial, current.Value);
@@ -134,12 +150,27 @@ public class MyLinkedList<T> : IMyCollection<T>
         }
         return result;
     }
-    public IMyIterator<T> GetIterator() // 
+    public IMyIterator<T> GetIterator()
     {
         return new MyLinkedListIterator<T>(this);
     }
-    public IEnumerator<T> GetEnumerator() // 
+    public IEnumerator<T> GetEnumerator()
     {
-        return default!;
+        var iterator = GetIterator();
+        while (iterator.HasNext())
+        {
+            yield return iterator.Next();
+        }
+    }
+
+    public T[] ToArray()
+    {
+        var array = new T[_count];
+        int index = 0;
+        foreach (var item in this)
+        {
+            array[index++] = item;
+        }
+        return array;
     }
 }

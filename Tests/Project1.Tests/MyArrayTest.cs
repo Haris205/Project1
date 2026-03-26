@@ -215,4 +215,28 @@ public sealed class MyArrayTest
             expected++;
         }
     }
+
+    [TestMethod]
+    public void MyLinkedList_GetEnumerator_Test()
+    {
+        var list = new MyLinkedList<int>();
+        list.Add(1);
+        list.Add(2);
+        list.Add(3);
+
+        var expected = 3;
+        foreach (var item in list)
+        {
+            Assert.AreEqual(expected, item);
+            expected--;
+        }
+    }
+
+    [TestMethod]
+    public void MyLinkedList_Remove_OnEmpty_DoesNotThrow()
+    {
+        var list = new MyLinkedList<int>();
+        list.Remove(42);
+        Assert.AreEqual(0, list.Count);
+    }
 }

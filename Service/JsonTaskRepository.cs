@@ -22,8 +22,13 @@ public class JsonTaskRepository : ITaskRepository {
   }
   public void SaveTasks(IMyCollection<TaskItem> tasks)
   {
-    var array = ((MyArray<TaskItem>) tasks).ToArray();
-    string json = JsonSerializer.Serialize(array,
+    var taskList = new MyLinkedList<TaskItem>();
+    foreach (var task in tasks)
+    {
+      taskList.Add(task);
+    }
+
+    string json = JsonSerializer.Serialize(taskList.ToArray(),
       new JsonSerializerOptions { WriteIndented = true });
     File.WriteAllText(_filePath, json);
   }
