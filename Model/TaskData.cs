@@ -5,6 +5,7 @@ public class TaskItem
     public bool Completed { get; set; }
     public PriorityLevel Priority { get; set; } 
     public DateTime CreatedAt { get; set; } = DateTime.Now;
+    public string Assignee { get; set; } = null!;
 }
 public enum PriorityLevel
 {

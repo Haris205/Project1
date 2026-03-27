@@ -12,7 +12,7 @@ public class ConsoleTaskView : ITaskView
     while (iterator.HasNext())
     {
       var task = iterator.Next();
-      Console.WriteLine($"TaskItem: {task.Id} | Completed: {task.Completed}"); 
+      Console.WriteLine($"TaskItem: {task.Id} | Assignee {task.Assignee} | Completed: {task.Completed}"); 
     }
   } 
  
@@ -67,9 +67,33 @@ public class ConsoleTaskView : ITaskView
   }
   string Prompt(string prompt) { 
     Console.Write(prompt); 
-    return Console.ReadLine()!; 
-  } 
+    return Console.ReadLine()!.Trim(); 
+  }
+  void InvalidModifyRights()
+  {
+    Console.WriteLine("Invalid modify rights!");
+    Console.WriteLine("Press any key to return");
+    Console.ReadKey();
+    return;
+  }
+  bool ContainsDigit(string input)
+  {
+    foreach (char c in input)
+    {
+      if (char.IsDigit(c))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
   public void Run() {
+    string user = Prompt("Enter user name: ");
+
+    while (string.IsNullOrEmpty(user) || ContainsDigit(user))
+    {
+      user = Prompt("Enter a valid user name (No digits allowed): ");
+    }
 
     Console.WriteLine("Choose a data structure:");
     Console.WriteLine("1. Array\n2. LinkedList\n");
@@ -94,11 +118,11 @@ public class ConsoleTaskView : ITaskView
       Console.WriteLine("5. Filter Task"); 
       Console.WriteLine("6. Exit"); 
  
-      string option = Prompt("Select an option: ");
+      string option = Prompt("\nSelect an option: ");
       switch (option)
       {
         case "1":
-              string addDescription = Prompt("\nEnter task description:");
+              string addDescription = Prompt("\nEnter task description: ");
               string priorityInput = Prompt("\nEnter task priority:\n1.Low\n2.Medium\n3.High\n");
               PriorityLevel priority;
               switch (priorityInput)
@@ -117,25 +141,41 @@ public class ConsoleTaskView : ITaskView
                       priority = PriorityLevel.Medium;
                       break;
               }
-            _service.AddTask(addDescription, priority);
+              string assignee = Prompt("Enter assignee name: ");
+            _service.AddTask(addDescription, priority, assignee);
             break;
         case "2":
-          string updateIdStr = Prompt ("Enter task id to update: ");
-          if (int.TryParse(updateIdStr, out int updateId)) { 
-            string updateDescription = Prompt ("Enter new task description: ");
-            _service.UpdateTask(updateId, updateDescription); 
+          string updateIdStr = Prompt ("\nEnter task id to update: ");
+          if (int.TryParse(updateIdStr, out int updateId)) {
+              if (_service.CanUserModify(updateId, user))
+              {
+                string updateDescription = Prompt ("Enter new task description: ");
+                _service.UpdateTask(updateId, updateDescription, user);
+                return;
+              }
+              InvalidModifyRights();
           }
           break;
         case "3":
         string removeIdStr = Prompt ("Enter task id to remove: ");
-         if (int.TryParse(removeIdStr, out int removeId)) { 
-            _service.RemoveTask(removeId); 
+         if (int.TryParse(removeIdStr, out int removeId)) {
+            if (_service.CanUserModify(removeId, user))
+            {
+              _service.RemoveTask(removeId, user); 
+              return;
+            }
+            InvalidModifyRights();
           } 
           break;
         case "4":
         string toggleIdStr = Prompt ("Enter task id to toggle: "); 
-          if (int.TryParse(toggleIdStr, out int toggleId)) { 
-            _service.ToggleTaskCompletion(toggleId); 
+          if (int.TryParse(toggleIdStr, out int toggleId)) {
+            if (_service.CanUserModify(toggleId, user))
+            {
+              _service.ToggleTaskCompletion(toggleId, user);
+              return;
+            }
+            InvalidModifyRights();
           } 
           break;
         case "5":

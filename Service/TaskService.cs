@@ -32,14 +32,31 @@ public class TaskService : ITaskService
 
     return result;
   }
-  public void AddTask(string description, PriorityLevel priority)
+  bool CanModify(string user, string assignee)
+  {
+    return user == assignee;
+  }
+  public bool CanUserModify(int id, string user)
+  {
+    var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
+    if (task == null) return false;
+    return CanModify(user, task.Assignee);
+  }
+  public void AddTask(string description, PriorityLevel priority, string assignee)
   { 
     int maxId = _tasks.Reduce(0, (max, t) => t.Id > max ? t.Id : max);
-    var newTask = new TaskItem { Id = maxId + 1, Description = description, Completed = false, Priority = priority, CreatedAt = DateTime.Now}; 
+    var newTask = new TaskItem {
+        Id = maxId + 1,
+        Description = description,
+        Completed = false,
+        Priority = priority,
+        CreatedAt = DateTime.Now,
+        Assignee = assignee
+      }; 
     _tasks.Add(newTask); 
     _repository.SaveTasks(_tasks);
   }
-  public void UpdateTask(int id, string description)
+  public void UpdateTask(int id, string description, string user)
   {
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task != null)
@@ -48,7 +65,7 @@ public class TaskService : ITaskService
       _repository.SaveTasks(_tasks);
     }
   }
-  public void RemoveTask(int id)
+  public void RemoveTask(int id, string user)
   {
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task != null)
@@ -57,7 +74,7 @@ public class TaskService : ITaskService
       _repository.SaveTasks(_tasks);
     }
   }
-  public void ToggleTaskCompletion(int id)
+  public void ToggleTaskCompletion(int id, string user)
   {
     var task = _tasks.FindBy(id, (t, k) => t.Id.CompareTo(k));
     if (task != null)
