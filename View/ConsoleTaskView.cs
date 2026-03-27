@@ -151,7 +151,7 @@ public class ConsoleTaskView : ITaskView
               {
                 string updateDescription = Prompt ("Enter new task description: ");
                 _service.UpdateTask(updateId, updateDescription, user);
-                return;
+                break;
               }
               InvalidModifyRights();
           }
@@ -162,7 +162,7 @@ public class ConsoleTaskView : ITaskView
             if (_service.CanUserModify(removeId, user))
             {
               _service.RemoveTask(removeId, user); 
-              return;
+              break;
             }
             InvalidModifyRights();
           } 
@@ -173,7 +173,7 @@ public class ConsoleTaskView : ITaskView
             if (_service.CanUserModify(toggleId, user))
             {
               _service.ToggleTaskCompletion(toggleId, user);
-              return;
+              break;
             }
             InvalidModifyRights();
           } 
