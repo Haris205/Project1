@@ -9,6 +9,8 @@ public class MyArray<T> : IMyCollection<T>
 
     public MyArray(int capacity = 10)
     {
+        if (capacity <= 0)
+            capacity = 4;
         _items = new T[capacity];
         _count = 0;
     }
@@ -16,7 +18,7 @@ public class MyArray<T> : IMyCollection<T>
     {
         if (_count == _items.Length)
         {
-            T[] newArray = new T[_items.Length + 1];
+            T[] newArray = new T[_items.Length * 2];
 
             for (int i = 0; i < _items.Length; i++)
             {
