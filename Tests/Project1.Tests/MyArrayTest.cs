@@ -9,7 +9,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void AddSingleTask()
+    public void AddSingleTaskArr()
     {
         var array = new MyArray<string>();
         array.Add("Buy groceries");
@@ -17,7 +17,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void AddMultipleTask()
+    public void AddMultipleTaskArr()
     {
         var array = new MyArray<string>();
         array.Add("Task 1");
@@ -27,7 +27,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void AddMoreThanCapacity()
+    public void AddMoreThanCapacityArr()
     {
         var array = new MyArray<string>(2);
         array.Add("Task 1");
@@ -37,7 +37,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void AddSetsDirtyToTrue()
+    public void AddSetsDirtyToTrueArr()
     {
         var array = new MyArray<string>();
         array.Add("Task 1");
@@ -45,7 +45,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void FilterByMatchingPredicate()
+    public void FilterByMatchingPredicateArr()
     {
         var array = new MyArray<string>();
         array.Add("Buy groceries");
@@ -57,7 +57,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void FilterNoMatchingPredicate()
+    public void FilterNoMatchingPredicateArr()
     {
         var array = new MyArray<string>();
         array.Add("Wash your car");
@@ -68,7 +68,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void FilterAllMatching()
+    public void FilterAllMatchingArr()
     {
         var array = new MyArray<string>();
         array.Add("Buy groceries");
@@ -79,7 +79,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void SortIntegersAscending()
+    public void SortIntegersAscendingArr()
     {
         var array = new MyArray<int>();
         array.Add(3);
@@ -95,7 +95,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void SortSetsDirtyTrue()
+    public void SortSetsDirtyTrueArr()
     {
         var array = new MyArray<int>();
         array.Add(3);
@@ -108,7 +108,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void GetIteratorOneItem()
+    public void GetIteratorOneItemArr()
     {
         var array = new MyArray<string>();
         array.Add("Task 1");
@@ -119,7 +119,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void GetIteratorMultipleItems()
+    public void GetIteratorMultipleItemsArr()
     {
         var array = new MyArray<string>();
         array.Add("Task 1");
@@ -132,7 +132,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void GetIteratorReturnsFalse()
+    public void GetIteratorReturnsFalseArr()
     {
         var array = new MyArray<string>();
         array.Add("Task 1");
@@ -144,7 +144,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void GetIteratorReset()
+    public void GetIteratorResetArr()
     {
         var array = new MyArray<string>();
         array.Add("Task 1");
@@ -159,7 +159,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void Remove_Test()
+    public void Remove_TestArr()
     {
         var array = new MyArray<int>();
         array.Add(1);
@@ -178,7 +178,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void FindBy_Test()
+    public void FindBy_TestArr()
     {
         var array = new MyArray<int>();
         array.Add(10);
@@ -189,7 +189,7 @@ public sealed class MyArrayTest
     }
     
     [TestMethod]
-    public void Reduce_Test()
+    public void Reduce_TestArr()
     {
         var array = new MyArray<int>();
         array.Add(1);
@@ -200,7 +200,7 @@ public sealed class MyArrayTest
     }
 
     [TestMethod]
-    public void GetEnumerator_Test()
+    public void GetEnumerator_TestArr()
     {
         var array = new MyArray<int>();
         array.Add(1);
@@ -214,29 +214,5 @@ public sealed class MyArrayTest
             Assert.AreEqual(expected, item);
             expected++;
         }
-    }
-
-    [TestMethod]
-    public void MyLinkedList_GetEnumerator_Test()
-    {
-        var list = new MyLinkedList<int>();
-        list.Add(1);
-        list.Add(2);
-        list.Add(3);
-
-        var expected = 3;
-        foreach (var item in list)
-        {
-            Assert.AreEqual(expected, item);
-            expected--;
-        }
-    }
-
-    [TestMethod]
-    public void MyLinkedList_Remove_OnEmpty_DoesNotThrow()
-    {
-        var list = new MyLinkedList<int>();
-        list.Remove(42);
-        Assert.AreEqual(0, list.Count);
     }
 }

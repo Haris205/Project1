@@ -7,7 +7,7 @@ public class MyDictionary<T> : IMyCollection<T>
 
     public int Count => _count;
 
-    public MyDictionary(int capacity)
+    public MyDictionary(int capacity = 10)
     {
         if (capacity <= 0)
             capacity = 4;
@@ -33,34 +33,112 @@ public class MyDictionary<T> : IMyCollection<T>
     }
     public void Remove(T item)
     {
-        
+        int index = -1;
+        for (int i = 0; i < _count; i++)
+        {
+            if (Equals(_items[i], item))
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index == -1)
+            return;
+        for (int i = index; i < _count - 1; i++)
+        {
+            _items[i] = _items[i + 1];
+        }
+        _count--;
+        Dirty = true;
     }
     public T FindBy<K>(K key, Func<T, K, int> comparer)
     {
+        for (int i = 0; i < _count; i++)
+        {
+            if (comparer(_items[i], key) == 0)
+            {
+                return _items[i];
+            }
+        }
         return default!;
     }
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        return default!;
+        MyDictionary<T> result = new MyDictionary<T>();
+
+        for (int i = 0; i < _count; i++)
+        {
+            if (predicate(_items[i]))
+            {
+                result.Add(_items[i]);
+            }
+        }
+        return result;
     }
     public void Sort(Comparison<T> comparison)
     {
-        
+        for (int i = 1; i < _count; i++)
+        {
+            T key = _items[i];
+            int j = i - 1;
+
+            while (j >= 0 && comparison(_items[j], key) > 0)
+            {
+                _items[j + 1] = _items[j];
+                j--;
+            }
+
+            _items[j + 1] = key;
+        }
+        Dirty = true;
     }
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        return default!;
+        R result = default!;
+
+        for (int i = 0; i < _count; i++)
+        {
+            result = accumulator(result, _items[i]);
+        }
+        return result;
     }
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        return default!;
+        R result = initial;
+
+        for (int i = 0; i < _count; i++)
+        {
+            result = accumulator(result, _items[i]);
+        }
+        return result;
     }
     public IMyIterator<T> GetIterator()
     {
-        return default!;
+        return new MyArrayIterator<T>(_items, _count);
     }
     public IEnumerator<T> GetEnumerator()
     {
-        return default!;
+        var iterator = GetIterator();
+        while (iterator.HasNext())
+        {
+            yield return iterator.Next();
+        }
+    }
+    public int IndexOf(Func<T, bool> predicate)
+    {
+        for (int i = 0; i < _count; i++)
+        {
+            if (predicate(_items[i]))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public T GetAt(int index)
+    {
+        if (index < 0 || index >= _count)
+            return default!;
+        return _items[index];
     }
 }

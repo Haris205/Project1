@@ -8,7 +8,9 @@ public interface IMyCollection<T>
     int Count { get; }
     bool Dirty {get; set;}
     R Reduce<R>(Func<R, T, R> accumulator); 
-    R Reduce<R>(R initial, Func<R, T, R> accumulator); 
+    R Reduce<R>(R initial, Func<R, T, R> accumulator);
+    int IndexOf(Func<T, bool> predicate);
+    T GetAt(int index);
     IMyIterator<T> GetIterator(); // Custom Iterator - Since we are not using System.Collections.Generic 
-    IEnumerator<T> GetEnumerator(); // Extra foreach lookup. 
+    IEnumerator<T> GetEnumerator(); // Extra foreach lookup.
 }

@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public class MyLinkedList<T> : IMyCollection<T>
 {
     internal class Node
@@ -162,7 +164,6 @@ public class MyLinkedList<T> : IMyCollection<T>
             yield return iterator.Next();
         }
     }
-
     public T[] ToArray()
     {
         var array = new T[_count];
@@ -172,5 +173,38 @@ public class MyLinkedList<T> : IMyCollection<T>
             array[index++] = item;
         }
         return array;
+    }
+    public int IndexOf(Func<T, bool> predicate)
+    {
+        int index = 0;
+
+        var current = _head;
+        while (current != null)
+        {
+            if (predicate(current.Value))
+                return index;
+            
+            current = current.Next;
+            index++;
+        }
+        return -1;
+    }
+    public T GetAt(int index)
+    {
+        if (index < 0)
+            return default!;
+        
+        var current = _head;
+        int currentIndex = 0;
+        
+        while (current != null)
+        {
+            if (currentIndex == index)
+                return current.Value;
+
+            current = current.Next;
+            currentIndex++;
+        }
+        return default!;
     }
 }

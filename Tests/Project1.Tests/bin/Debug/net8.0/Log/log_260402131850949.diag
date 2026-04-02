@@ -1,0 +1,20 @@
+2026-04-02T13:18:50.9584866+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Version: 1.6.3+5354e77dc47f233239dfddf6d2be620b9e14b171
+2026-04-02T13:18:50.9882666+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging mode: asynchronous
+2026-04-02T13:18:50.9928720+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Logging level: Information
+2026-04-02T13:18:50.9928900+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION CreateBuilderAsync entry time: 13:18:50.915
+2026-04-02T13:18:50.9962059+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION PID: 8280
+2026-04-02T13:18:50.9964244+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime information: win-x64 - .NET 8.0.12
+2026-04-02T13:18:50.9964440+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Runtime location: C:\Program Files\dotnet\shared\Microsoft.NETCore.App\8.0.12\System.Private.CoreLib.dll
+2026-04-02T13:18:50.9964855+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION IsDynamicCodeSupported: True
+2026-04-02T13:18:50.9964947+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Test module: C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll
+2026-04-02T13:18:50.9968796+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION Command line arguments: '--server --diagnostic --diagnostic-verbosity Information --diagnostic-output-directory C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Log --client-port 62292'
+2026-04-02T13:18:50.9998595+00:00 Microsoft.Testing.Platform.Builder.TestApplication INFORMATION TESTINGPLATFORM_DEFAULT_HANG_TIMEOUT: ''
+2026-04-02T13:18:51.0412226+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting RegisterEnvironmentVariablesConfigurationSource: 'True'
+2026-04-02T13:18:51.0487856+00:00 Microsoft.Testing.Platform.Configurations.JsonConfigurationSource+JsonConfigurationProvider INFORMATION Config file 'C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.testconfig.json' loaded.
+2026-04-02T13:18:51.0794585+00:00 Microsoft.Testing.Platform.Hosts.TestHostBuilder INFORMATION Setting PlatformExitProcessOnUnhandledException: 'False', config file: False environment variable:  VSTest mode: False
+2026-04-02T13:18:51.3281669+00:00 Microsoft.Testing.Platform.Requests.TestHostTestFrameworkInvoker INFORMATION Test framework UID: 'MSTest.Sdk' Version: '3.8.3' DisplayName: 'MSTest' Description: 'MSTest Framework for Microsoft Testing Platform'
+2026-04-02T13:18:51.3451071+00:00 Microsoft.Testing.Extensions.VSTestBridge.ObjectModel.MessageLoggerAdapter WARNING Runsettings datacollectors are not supported by Microsoft.Testing.Platform and will be ignored
+2026-04-02T13:18:51.3484519+00:00 Microsoft.Testing.Extensions.VSTestBridge.ObjectModel.MessageLoggerAdapter WARNING Runsettings attribute 'MaxCpuCount' is not supported by Microsoft.Testing.Platform and will be ignored
+2026-04-02T13:18:51.3617313+00:00 mstest-trace INFORMATION CollectSourceInformation value found : True 
+2026-04-02T13:18:51.4206471+00:00 mstest-trace INFORMATION MSTestDiscoverer: Found 41 tests from source C:\Users\haris_zub3pcb\Documents\GitHub\Project1\Tests\Project1.Tests\bin\Debug\net8.0\Project1.Tests.dll
+2026-04-02T13:18:54.5732250+00:00 Microsoft.Testing.Extensions.Telemetry.AppInsightsProvider WARNING Telemetry task didn't flush after '3', some payload could be lost
