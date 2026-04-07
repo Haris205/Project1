@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 public class MyLinkedList<T> : IMyCollection<T>
 {
     internal class Node
