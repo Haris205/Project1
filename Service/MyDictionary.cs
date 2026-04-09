@@ -1,121 +1,254 @@
-public class MyDictionary<T> : IMyCollection<T>
+public class MyDictionary<K, T> : IMyCollection<T>
 {
-    private T[] _items;
+    private class Entry
+    {
+        public K Key;
+        public T Value;
+        public Entry? Next;
+
+        public Entry(K key, T value)
+        {
+            Key = key;
+            Value = value;
+            Next = null;
+        }
+    }
+
+    private Entry?[] _buckets;
     private int _count;
 
     public bool Dirty { get; set; }
-
     public int Count => _count;
 
-    public MyDictionary(int capacity = 10)
+    public MyDictionary(int capacity = 16)
     {
         if (capacity <= 0)
-            capacity = 4;
-        _items = new T[capacity];
+            capacity = 16;
+
+        _buckets = new Entry[capacity];
         _count = 0;
     }
+
+    private int GetIndex(K key)
+    {
+        return Math.Abs(key!.GetHashCode()) % _buckets.Length;
+    }
+
     public void Add(T item)
     {
-        if (_count == _items.Length)
+        if (item is TaskItem task)
         {
-            T[] newArray = new T[_items.Length * 2];
-
-            for (int i = 0; i < _items.Length; i++)
-            {
-                newArray[i] = _items[i];
-            }
-            _items = newArray;
+            Add((K)(object)task.Id, item);
         }
-        
-        _items[_count] = item;
+    }
+    public void Add(K key, T value)
+    {
+        int index = GetIndex(key);
+        Entry? current = _buckets[index];
+
+        while (current != null)
+        {
+            if (Equals(current.Key, key))
+            {
+                current.Value = value;
+                Dirty = true;
+                return;
+            }
+            current = current.Next;
+        }
+
+        Entry newEntry = new Entry(key, value);
+        newEntry.Next = _buckets[index];
+        _buckets[index] = newEntry;
+
         _count++;
         Dirty = true;
     }
+
     public void Remove(T item)
     {
-        int index = -1;
-        for (int i = 0; i < _count; i++)
-        {
-            if (Equals(_items[i], item))
-            {
-                index = i;
-                break;
-            }
-        }
-        if (index == -1)
-            return;
-        for (int i = index; i < _count - 1; i++)
-        {
-            _items[i] = _items[i + 1];
-        }
-        _count--;
-        Dirty = true;
+        return;
     }
-    public T FindBy<K>(K key, Func<T, K, int> comparer)
+    public void Remove(K key)
     {
-        for (int i = 0; i < _count; i++)
+        int index = GetIndex(key);
+        Entry? current = _buckets[index];
+        Entry? prev = null;
+
+        while (current != null)
         {
-            if (comparer(_items[i], key) == 0)
+            if (Equals(current.Key, key))
             {
-                return _items[i];
+                if (prev == null)
+                    _buckets[index] = current.Next;
+                else
+                    prev.Next = current.Next;
+
+                _count--;
+                Dirty = true;
+                return;
+            }
+
+            prev = current;
+            current = current.Next;
+        }
+    }
+
+    public T FindBy<K2>(K2 key, Func<T, K2, int> comparer)
+    {
+        foreach (var bucket in _buckets)
+        {
+            Entry? current = bucket;
+            while (current != null)
+            {
+                if (comparer(current.Value, key) == 0)
+                    return current.Value;
+
+                current = current.Next;
             }
         }
         return default!;
     }
+
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        MyDictionary<T> result = new MyDictionary<T>();
+        MyDictionary<K, T> result = new MyDictionary<K, T>();
 
-        for (int i = 0; i < _count; i++)
+        foreach (var bucket in _buckets)
         {
-            if (predicate(_items[i]))
+            Entry? current = bucket;
+            while (current != null)
             {
-                result.Add(_items[i]);
+                if (predicate(current.Value))
+                    result.Add(current.Key, current.Value);
+
+                current = current.Next;
             }
         }
+
         return result;
     }
+
     public void Sort(Comparison<T> comparison)
     {
-        for (int i = 1; i < _count; i++)
+        List<(K key, T value)> items = new List<(K, T)>();
+
+        foreach (var bucket in _buckets)
         {
-            T key = _items[i];
-            int j = i - 1;
-
-            while (j >= 0 && comparison(_items[j], key) > 0)
+            Entry? current = bucket;
+            while (current != null)
             {
-                _items[j + 1] = _items[j];
-                j--;
+                items.Add((current.Key, current.Value));
+                current = current.Next;
             }
-
-            _items[j + 1] = key;
         }
+
+        items.Sort((a, b) => comparison(a.value, b.value));
+
+        _buckets = new Entry[_buckets.Length];
+        _count = 0;
+
+        foreach (var item in items)
+        {
+            Add(item.key, item.value);
+        }
+
         Dirty = true;
     }
+
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
         R result = default!;
 
-        for (int i = 0; i < _count; i++)
+        foreach (var bucket in _buckets)
         {
-            result = accumulator(result, _items[i]);
+            Entry? current = bucket;
+            while (current != null)
+            {
+                result = accumulator(result, current.Value);
+                current = current.Next;
+            }
         }
+
         return result;
     }
+
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
         R result = initial;
 
-        for (int i = 0; i < _count; i++)
+        foreach (var bucket in _buckets)
         {
-            result = accumulator(result, _items[i]);
+            Entry? current = bucket;
+            while (current != null)
+            {
+                result = accumulator(result, current.Value);
+                current = current.Next;
+            }
         }
+
         return result;
+    }
+
+    public int IndexOf(Func<T, bool> predicate)
+    {
+        int index = 0;
+
+        foreach (var bucket in _buckets)
+        {
+            Entry? current = bucket;
+            while (current != null)
+            {
+                if (predicate(current.Value))
+                    return index;
+
+                index++;
+                current = current.Next;
+            }
+        }
+
+        return -1;
+    }
+
+    public T GetAt(int index)
+    {
+        if (index < 0 || index >= _count)
+            return default!;
+
+        int currentIndex = 0;
+
+        foreach (var bucket in _buckets)
+        {
+            Entry? current = bucket;
+            while (current != null)
+            {
+                if (currentIndex == index)
+                    return current.Value;
+
+                currentIndex++;
+                current = current.Next;
+            }
+        }
+
+        return default!;
     }
     public IMyIterator<T> GetIterator()
     {
-        return new MyArrayIterator<T>(_items, _count);
+        List<T> values = new List<T>();
+
+        foreach (var bucket in _buckets)
+        {
+            Entry? current = bucket;
+            while (current != null)
+            {
+                values.Add(current.Value);
+                current = current.Next;
+            }
+        }
+
+        return new MyArrayIterator<T>(values.ToArray(), values.Count);
     }
+
     public IEnumerator<T> GetEnumerator()
     {
         var iterator = GetIterator();
@@ -123,22 +256,5 @@ public class MyDictionary<T> : IMyCollection<T>
         {
             yield return iterator.Next();
         }
-    }
-    public int IndexOf(Func<T, bool> predicate)
-    {
-        for (int i = 0; i < _count; i++)
-        {
-            if (predicate(_items[i]))
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
-    public T GetAt(int index)
-    {
-        if (index < 0 || index >= _count)
-            return default!;
-        return _items[index];
     }
 }

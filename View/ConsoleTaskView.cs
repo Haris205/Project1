@@ -96,13 +96,14 @@ public class ConsoleTaskView : ITaskView
     }
 
     Console.WriteLine("Choose a data structure:");
-    Console.WriteLine("1. Array\n2. LinkedList\n3. Dictionary");
+    Console.WriteLine("1. Array\n2. LinkedList\n3. Dictionary\n4. Binary Search Tree");
 
     CollectionType chosenType = Console.ReadLine() switch
     {
       "1" => CollectionType.Array,
       "2" => CollectionType.LinkedList,
       "3" => CollectionType.Dictionary,
+      "4" => CollectionType.BST,
       _ => CollectionType.Array
     };
 

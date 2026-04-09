@@ -76,13 +76,16 @@ public class TaskService : ITaskService
   }
   public bool IsPreviousTaskDone(int id)
   {
-    int index = _tasks.IndexOf(t => t.Id == id);
+      var tasks = GetAllTasks();
+      tasks.Sort((a, b) => a.Id.CompareTo(b.Id));
 
-    if (index <= 0)
-      return true;
+      int index = tasks.IndexOf(t => t.Id == id);
 
-    var previous = _tasks.GetAt(index - 1);
-    return previous != null && previous.Completed;
+      if (index <= 0)
+          return true;
+
+      var previous = tasks.GetAt(index - 1);
+      return previous != null && previous.Completed;
   }
   public void ToggleTaskCompletion(int id, string user)
   {
