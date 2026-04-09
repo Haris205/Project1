@@ -12,7 +12,7 @@ public class ConsoleTaskView : ITaskView
     while (iterator.HasNext())
     {
       var task = iterator.Next();
-      Console.WriteLine($"TaskItem: {task.Id} | Assignee {task.Assignee} | Completed: {task.Completed}"); 
+      Console.WriteLine($"TaskItem: {task.Id} | Assignee: {task.Assignee} | Completed: {task.Completed}"); 
     }
   } 
  
@@ -96,12 +96,14 @@ public class ConsoleTaskView : ITaskView
     }
 
     Console.WriteLine("Choose a data structure:");
-    Console.WriteLine("1. Array\n2. LinkedList\n");
+    Console.WriteLine("1. Array\n2. LinkedList\n3. Dictionary\n4. Binary Search Tree");
 
     CollectionType chosenType = Console.ReadLine() switch
     {
       "1" => CollectionType.Array,
       "2" => CollectionType.LinkedList,
+      "3" => CollectionType.Dictionary,
+      "4" => CollectionType.BST,
       _ => CollectionType.Array
     };
 
@@ -170,12 +172,20 @@ public class ConsoleTaskView : ITaskView
         case "4":
         string toggleIdStr = Prompt ("Enter task id to toggle: "); 
           if (int.TryParse(toggleIdStr, out int toggleId)) {
-            if (_service.CanUserModify(toggleId, user))
+            if (!_service.CanUserModify(toggleId, user))
             {
-              _service.ToggleTaskCompletion(toggleId, user);
+              InvalidModifyRights();
               break;
             }
-            InvalidModifyRights();
+            if (!_service.IsPreviousTaskDone(toggleId))
+            {
+              Console.WriteLine($"\nTask {toggleId} is locked. Complete the previous task first.");
+              Console.WriteLine("\nPress any key to return");
+              Console.ReadKey();
+              break;
+            }
+            _service.ToggleTaskCompletion(toggleId, user);
+            break;
           } 
           break;
         case "5":

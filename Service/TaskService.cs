@@ -74,6 +74,19 @@ public class TaskService : ITaskService
       _repository.SaveTasks(_tasks);
     }
   }
+  public bool IsPreviousTaskDone(int id)
+  {
+      var tasks = GetAllTasks();
+      tasks.Sort((a, b) => a.Id.CompareTo(b.Id));
+
+      int index = tasks.IndexOf(t => t.Id == id);
+
+      if (index <= 0)
+          return true;
+
+      var previous = tasks.GetAt(index - 1);
+      return previous != null && previous.Completed;
+  }
   public void ToggleTaskCompletion(int id, string user)
   {
     var task = _tasks.FindBy(id, (t, k) => t.Id.CompareTo(k));

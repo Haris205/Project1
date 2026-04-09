@@ -124,7 +124,6 @@ public class MyArray<T> : IMyCollection<T>
             yield return iterator.Next();
         }
     }
-
     public T[] ToArray()
     {
         T[] result = new T[_count];
@@ -133,5 +132,22 @@ public class MyArray<T> : IMyCollection<T>
             result[i] = _items[i];
         }
         return result;
+    }
+    public int IndexOf(Func<T, bool> predicate)
+    {
+        for (int i = 0; i < _count; i++)
+        {
+            if (predicate(_items[i]))
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    public T GetAt(int index)
+    {
+        if (index < 0 || index >= _count)
+            return default!;
+        return _items[index];
     }
 }
