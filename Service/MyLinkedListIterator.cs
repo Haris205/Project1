@@ -5,7 +5,7 @@ public class MyLinkedListIterator<T> : IMyIterator<T>
 
     public MyLinkedListIterator(MyLinkedList<T> list)
     {
-        _head = list._head!;
+        _head = list.Head!;
         _current = null!;
     }
     public bool HasNext()

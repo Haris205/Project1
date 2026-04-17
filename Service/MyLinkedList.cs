@@ -1,6 +1,6 @@
 public class MyLinkedList<T> : IMyCollection<T>
 {
-    internal class Node
+    public class Node
     {
         public T Value;
         public Node? Next;
@@ -12,7 +12,7 @@ public class MyLinkedList<T> : IMyCollection<T>
         }
     }
     
-    internal Node? _head;
+    public Node? Head;
     public bool Dirty { get; set; }
     private int _count;
     public int Count => _count;
@@ -22,21 +22,21 @@ public class MyLinkedList<T> : IMyCollection<T>
         if(item == null)
             return;
         Node newNode = new Node(item); 
-        newNode.Next = _head;
-        _head = newNode;      
+        newNode.Next = Head;
+        Head = newNode;      
         _count++;
         Dirty = true;   
     }
     public void Remove(T item)
     {
-        while (_head != null && _head.Value!.Equals(item))
+        while (Head != null && Head.Value!.Equals(item))
         {
-            _head = _head.Next;
+            Head = Head.Next;
             _count--;
             Dirty = true;
         }
 
-        Node? current = _head;
+        Node? current = Head;
         Node? previous = null;
 
         while (current != null)
@@ -57,20 +57,20 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
     public T FindBy<K>(K key, Func<T, K, int> comparer)
     {
-        Node? current = _head;
+        Node? current = Head;
         while (current != null)
         {
             if (comparer(current.Value, key) == 0)
                 return current.Value;
             current = current.Next;
         }
-        throw new InvalidOperationException("Element not found");
+        return default!;
     }
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
         MyLinkedList<T> result = new MyLinkedList<T>();
 
-        Node? current = _head;
+        Node? current = Head;
         while (current != null)
         {
             if (predicate(current.Value))
@@ -81,10 +81,10 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
     public void Sort(Comparison<T> comparison)
     {
-        if (_head == null)
+        if (Head == null)
             return;
 
-        _head = MergeSort(_head, comparison);
+        Head = MergeSort(Head, comparison);
         Dirty = true;
     }
     private Node MergeSort(Node node, Comparison<T> comparison)
@@ -130,7 +130,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
     public R Reduce<R>(Func<R, T, R> accumulator)
     {
-        Node? current = _head;
+        Node? current = Head;
         R initial = default!;
         while(current != null)
         {
@@ -141,7 +141,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     }
     public R Reduce<R>(R initial, Func<R, T, R> accumulator)
     {
-        Node? current = _head;
+        Node? current = Head;
         R result = initial;
         while(current != null)
         {
@@ -176,7 +176,7 @@ public class MyLinkedList<T> : IMyCollection<T>
     {
         int index = 0;
 
-        var current = _head;
+        var current = Head;
         while (current != null)
         {
             if (predicate(current.Value))
@@ -192,7 +192,7 @@ public class MyLinkedList<T> : IMyCollection<T>
         if (index < 0)
             return default!;
         
-        var current = _head;
+        var current = Head;
         int currentIndex = 0;
         
         while (current != null)
@@ -204,5 +204,10 @@ public class MyLinkedList<T> : IMyCollection<T>
             currentIndex++;
         }
         return default!;
+    }
+    public void Clear()
+    {
+        Head = null;
+        _count = 0;
     }
 }
