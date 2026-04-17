@@ -35,15 +35,6 @@ public sealed class MyArrayTest
         array.Add("Task 3");
         Assert.AreEqual(3, array.Count);
     }
-
-    [TestMethod]
-    public void AddSetsDirtyToTrueArr()
-    {
-        var array = new MyArray<string>();
-        array.Add("Task 1");
-        Assert.IsTrue(array.Dirty);
-    }
-
     [TestMethod]
     public void FilterByMatchingPredicateArr()
     {

@@ -1,4 +1,4 @@
-public enum CollectionType { Array, LinkedList, Dictionary, BST }
+public enum CollectionType { Array, LinkedList, Dictionary}
 
 public static class CollectionFactory
 {
@@ -7,7 +7,6 @@ public static class CollectionFactory
         CollectionType.Array => new MyArray<T>(),
         CollectionType.LinkedList => new MyLinkedList<T>(),
         CollectionType.Dictionary => new MyDictionary<int, T>(),
-        CollectionType.BST => new MyBST<T>(),
         _ => throw new ArgumentException("Unknown collection type")
     };
 }

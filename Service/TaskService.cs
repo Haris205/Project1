@@ -1,5 +1,13 @@
 public class TaskService : ITaskService
 {
+
+  /** 
+   * 1. An unassigned task can be updated by anyone
+   * 2. A way/option to change the current user in the application to another user
+   * 3. Display current user somewhere in the application
+   * 4. Implement task dependency
+   * 5. Studeer jouw code
+  */
   private readonly ITaskRepository _repository;
   private IMyCollection<TaskItem> _tasks = null!;
   private CollectionType _collectionType;
@@ -19,6 +27,10 @@ public class TaskService : ITaskService
     {
       _tasks.Add(task);
     }
+  }
+  public bool TaskExists(int id)
+  {
+      return _tasks.FindBy(id, (t, k) => t.Id.CompareTo(k)) != null;
   }
   public IMyCollection<TaskItem> GetAllTasks()
   {
@@ -40,21 +52,25 @@ public class TaskService : ITaskService
   {
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task == null) return false;
-    return CanModify(user, task.Assignee);
+    return task.Assignee == "none" ? true : CanModify(user, task.Assignee);
   }
-  public void AddTask(string description, PriorityLevel priority, string assignee)
-  { 
-    int maxId = _tasks.Reduce(0, (max, t) => t.Id > max ? t.Id : max);
-    var newTask = new TaskItem {
-        Id = maxId + 1,
-        Description = description,
-        Completed = false,
-        Priority = priority,
-        CreatedAt = DateTime.Now,
-        Assignee = assignee
-      }; 
-    _tasks.Add(newTask); 
-    _repository.SaveTasks(_tasks);
+  public void AddTask(string description, PriorityLevel priority, string assignee, MyLinkedList<int> dependencyIds)
+  {
+      int maxId = _tasks.Reduce(0, (max, t) => t.Id > max ? t.Id : max);
+
+      var newTask = new TaskItem
+      {
+          Id = maxId + 1,
+          Description = description,
+          Status = Status.ToDo,
+          Priority = priority,
+          CreatedAt = DateTime.Now,
+          Assignee = assignee,
+          Dependencies = dependencyIds
+      };
+
+      _tasks.Add(newTask);
+      _repository.SaveTasks(_tasks);
   }
   public void UpdateTask(int id, string description, string user)
   {
@@ -74,27 +90,57 @@ public class TaskService : ITaskService
       _repository.SaveTasks(_tasks);
     }
   }
-  public bool IsPreviousTaskDone(int id)
+  public void UpdateDependencies(int taskId, MyLinkedList<int> dependencyIds)
   {
-      var tasks = GetAllTasks();
-      tasks.Sort((a, b) => a.Id.CompareTo(b.Id));
+      var task = _tasks.FindBy(taskId, (t, id) => t.Id.CompareTo(id));
+      if (task == null) return;
 
-      int index = tasks.IndexOf(t => t.Id == id);
+      var validDeps = new MyLinkedList<int>();
 
-      if (index <= 0)
-          return true;
+      var it = dependencyIds.GetIterator();
+      while (it.HasNext())
+      {
+          int depId = it.Next();
 
-      var previous = tasks.GetAt(index - 1);
-      return previous != null && previous.Completed;
-  }
-  public void ToggleTaskCompletion(int id, string user)
-  {
-    var task = _tasks.FindBy(id, (t, k) => t.Id.CompareTo(k));
-    if (task != null)
-    {
-      task.Completed = !task.Completed;
+          var exists = _tasks.FindBy(depId, (t, id) => t.Id.CompareTo(id)) != null;
+
+          if (exists && depId != taskId)
+          {
+              validDeps.Add(depId);
+          }
+      }
+
+      task.Dependencies = validDeps;
+
       _repository.SaveTasks(_tasks);
-    }
+  }
+  public bool AreDependenciesDone(int taskId)
+  {
+      var task = _tasks.FindBy(taskId, (t, k) => t.Id.CompareTo(k));
+      if (task == null) return true;
+
+      var it = task.Dependencies.GetIterator();
+
+      while (it.HasNext())
+      {
+          int depId = it.Next();
+
+          var depTask = _tasks.FindBy(depId, (t, k) => t.Id.CompareTo(k));
+
+          if (depTask == null || depTask.Status != Status.Done)
+              return false;
+      }
+
+      return true;
+  }
+  public void ToggleTaskState(int id, string user, Status status)
+  {
+      var task = _tasks.FindBy(id, (t, k) => t.Id.CompareTo(k));
+      if (task == null) return;
+
+      task.Status = status;
+
+      _repository.SaveTasks(_tasks);
   }
   public IMyCollection<TaskItem> FilterTasks(IMyCollection<TaskItem> tasks, Func<TaskItem, bool> predicate)
   {

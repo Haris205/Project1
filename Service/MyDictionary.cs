@@ -4,17 +4,15 @@ public class MyDictionary<K, T> : IMyCollection<T>
     {
         public K Key;
         public T Value;
-        public Entry? Next;
 
         public Entry(K key, T value)
         {
             Key = key;
             Value = value;
-            Next = null;
         }
     }
 
-    private Entry?[] _buckets;
+    private MyLinkedList<Entry>[] _buckets;
     private int _count;
 
     public bool Dirty { get; set; }
@@ -25,13 +23,37 @@ public class MyDictionary<K, T> : IMyCollection<T>
         if (capacity <= 0)
             capacity = 16;
 
-        _buckets = new Entry[capacity];
-        _count = 0;
+        _buckets = new MyLinkedList<Entry>[capacity];
+
+        for (int i = 0; i < capacity; i++)
+        {
+            _buckets[i] = new MyLinkedList<Entry>();
+        }
     }
 
     private int GetIndex(K key)
     {
         return Math.Abs(key!.GetHashCode()) % _buckets.Length;
+    }
+
+    public void Add(K key, T value)
+    {
+        int index = GetIndex(key);
+        var bucket = _buckets[index];
+
+        foreach (var entry in bucket)
+        {
+            if (Equals(entry.Key, key))
+            {
+                entry.Value = value;
+                Dirty = true;
+                return;
+            }
+        }
+
+        bucket.Add(new Entry(key, value));
+        _count++;
+        Dirty = true;
     }
 
     public void Add(T item)
@@ -41,88 +63,56 @@ public class MyDictionary<K, T> : IMyCollection<T>
             Add((K)(object)task.Id, item);
         }
     }
-    public void Add(K key, T value)
-    {
-        int index = GetIndex(key);
-        Entry? current = _buckets[index];
-
-        while (current != null)
-        {
-            if (Equals(current.Key, key))
-            {
-                current.Value = value;
-                Dirty = true;
-                return;
-            }
-            current = current.Next;
-        }
-
-        Entry newEntry = new Entry(key, value);
-        newEntry.Next = _buckets[index];
-        _buckets[index] = newEntry;
-
-        _count++;
-        Dirty = true;
-    }
 
     public void Remove(T item)
     {
-        return;
+        if (item is TaskItem task)
+        {
+            RemoveKey((K)(object)task.Id);
+        }
     }
-    public void Remove(K key)
+
+    private void RemoveKey(K key)
     {
         int index = GetIndex(key);
-        Entry? current = _buckets[index];
-        Entry? prev = null;
+        var bucket = _buckets[index];
 
-        while (current != null)
+        foreach (var entry in bucket)
         {
-            if (Equals(current.Key, key))
+            if (Equals(entry.Key, key))
             {
-                if (prev == null)
-                    _buckets[index] = current.Next;
-                else
-                    prev.Next = current.Next;
-
+                bucket.Remove(entry);
                 _count--;
                 Dirty = true;
                 return;
             }
-
-            prev = current;
-            current = current.Next;
         }
     }
-
+    
     public T FindBy<K2>(K2 key, Func<T, K2, int> comparer)
     {
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
-            while (current != null)
+            foreach (var entry in bucket)
             {
-                if (comparer(current.Value, key) == 0)
-                    return current.Value;
-
-                current = current.Next;
+                if (comparer(entry.Value, key) == 0)
+                    return entry.Value;
             }
         }
+
         return default!;
     }
 
     public IMyCollection<T> Filter(Func<T, bool> predicate)
     {
-        MyDictionary<K, T> result = new MyDictionary<K, T>();
+        var result = new MyDictionary<K, T>();
 
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
-            while (current != null)
+            foreach (var entry in bucket)
             {
-                if (predicate(current.Value))
-                    result.Add(current.Key, current.Value);
-
-                current = current.Next;
+                if (predicate(entry.Value))
+                    result.Add(entry.Key, entry.Value);
             }
         }
 
@@ -131,21 +121,23 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
     public void Sort(Comparison<T> comparison)
     {
-        List<(K key, T value)> items = new List<(K, T)>();
+        var items = new List<(K key, T value)>();
 
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
-            while (current != null)
+            foreach (var entry in bucket)
             {
-                items.Add((current.Key, current.Value));
-                current = current.Next;
+                items.Add((entry.Key, entry.Value));
             }
         }
 
         items.Sort((a, b) => comparison(a.value, b.value));
 
-        _buckets = new Entry[_buckets.Length];
+        foreach (var bucket in _buckets)
+        {
+            bucket.Clear();
+        }
+
         _count = 0;
 
         foreach (var item in items)
@@ -162,11 +154,9 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
-            while (current != null)
+            foreach (var entry in bucket)
             {
-                result = accumulator(result, current.Value);
-                current = current.Next;
+                result = accumulator(result, entry.Value);
             }
         }
 
@@ -179,15 +169,37 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
-            while (current != null)
+            foreach (var entry in bucket)
             {
-                result = accumulator(result, current.Value);
-                current = current.Next;
+                result = accumulator(result, entry.Value);
             }
         }
 
         return result;
+    }
+
+    public IMyIterator<T> GetIterator()
+    {
+        var values = new List<T>();
+
+        foreach (var bucket in _buckets)
+        {
+            foreach (var entry in bucket)
+            {
+                values.Add(entry.Value);
+            }
+        }
+
+        return new MyArrayIterator<T>(values.ToArray(), values.Count);
+    }
+
+    public IEnumerator<T> GetEnumerator()
+    {
+        var iterator = GetIterator();
+        while (iterator.HasNext())
+        {
+            yield return iterator.Next();
+        }
     }
 
     public int IndexOf(Func<T, bool> predicate)
@@ -196,10 +208,13 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
+            var current = bucket.Head;
+
             while (current != null)
             {
-                if (predicate(current.Value))
+                var entry = current.Value;
+
+                if (predicate(entry.Value))
                     return index;
 
                 index++;
@@ -219,42 +234,19 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
         foreach (var bucket in _buckets)
         {
-            Entry? current = bucket;
+            var current = bucket.Head;
             while (current != null)
             {
                 if (currentIndex == index)
-                    return current.Value;
-
+                {
+                    var entry = current.Value;
+                    return entry.Value;
+                }
                 currentIndex++;
                 current = current.Next;
             }
         }
 
         return default!;
-    }
-    public IMyIterator<T> GetIterator()
-    {
-        List<T> values = new List<T>();
-
-        foreach (var bucket in _buckets)
-        {
-            Entry? current = bucket;
-            while (current != null)
-            {
-                values.Add(current.Value);
-                current = current.Next;
-            }
-        }
-
-        return new MyArrayIterator<T>(values.ToArray(), values.Count);
-    }
-
-    public IEnumerator<T> GetEnumerator()
-    {
-        var iterator = GetIterator();
-        while (iterator.HasNext())
-        {
-            yield return iterator.Next();
-        }
     }
 }
