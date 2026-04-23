@@ -72,12 +72,13 @@ public class TaskService : ITaskService
       _tasks.Add(newTask);
       _repository.SaveTasks(_tasks);
   }
-  public void UpdateTask(int id, string description, string user)
+  public void UpdateTask(int id, string description, string assignee, string user)
   {
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task != null)
     {
       task.Description = description;
+      task.Assignee = string.IsNullOrWhiteSpace(assignee) ? "none" : assignee;
       _repository.SaveTasks(_tasks);
     }
   }

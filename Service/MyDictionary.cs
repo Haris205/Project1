@@ -121,7 +121,7 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
     public void Sort(Comparison<T> comparison)
     {
-        var items = new List<(K key, T value)>();
+        var items = new MyLinkedList<(K key, T value)>();
 
         foreach (var bucket in _buckets)
         {
@@ -180,7 +180,7 @@ public class MyDictionary<K, T> : IMyCollection<T>
 
     public IMyIterator<T> GetIterator()
     {
-        var values = new List<T>();
+        var values = new MyLinkedList<T>();
 
         foreach (var bucket in _buckets)
         {

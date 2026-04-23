@@ -3,7 +3,7 @@ public interface ITaskService {
   IMyCollection<TaskItem> GetTaskAsCollection();
   void SetCollectionType(CollectionType type);
   void AddTask(string description, PriorityLevel priority, string assignee, MyLinkedList<int> dependencyId);
-  void UpdateTask(int id, string description, string user);
+  void UpdateTask(int id, string description, string assignee, string user);
   void RemoveTask(int id, string user);
   bool AreDependenciesDone(int taskId);
   void ToggleTaskState(int id, string user, Status status);

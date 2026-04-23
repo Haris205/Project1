@@ -183,7 +183,7 @@ public class ConsoleTaskView : ITaskView
       Console.WriteLine("3. Remove Task"); 
       Console.WriteLine("4. Toggle Task State");
       Console.WriteLine("5. Filter Task");
-      Console.WriteLine("6. Change User"); 
+      Console.WriteLine("6. Change User");
       Console.WriteLine("7. Change Dependencies"); 
       Console.WriteLine("8. Exit"); 
  
@@ -232,14 +232,21 @@ public class ConsoleTaskView : ITaskView
               break;
         case "2":
           string updateIdStr = Prompt ("\nEnter task id to update: ");
-          if (int.TryParse(updateIdStr, out int updateId)) {
-              if (_service.CanUserModify(updateId, user))
+          if (int.TryParse(updateIdStr, out int updateId))
+          {
+            if (_service.CanUserModify(updateId, user))
+            {
+              if (!_service.TaskExists(updateId))
               {
-                string updateDescription = Prompt ("Enter new task description: ");
-                _service.UpdateTask(updateId, updateDescription, user);
-                break;
+                Console.WriteLine("Task not found\nPress any key to return");
+                Console.ReadKey();
               }
-              InvalidModifyRights();
+              string updateDescription = Prompt ("Enter new task description: ");
+              string updateAssignee = Prompt ("Enter assignee name (Keep empty for none): ");
+              _service.UpdateTask(updateId, updateDescription, updateAssignee, user);
+              break;
+            }
+            InvalidModifyRights();
           }
           break;
         case "3":
