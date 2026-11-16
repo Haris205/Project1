@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "Id": 1,
+    "Description": "Huiswerk maken",
+    "Priority": 1,
+    "CreatedAt": "2026-11-16T14:08:59.1221541+01:00",
+    "Assignee": "Haris",
+    "Status": 1,
+    "Dependencies": []
+  },
+  {
+    "Id": 2,
+    "Description": "Webdev leren",
+    "Priority": 1,
+    "CreatedAt": "2026-11-16T14:09:48.6248106+01:00",
+    "Assignee": "none",
+    "Status": 1,
+    "Dependencies": []
+  }
+]

@@ -44,15 +44,17 @@ public class TaskService : ITaskService
 
     return result;
   }
-  bool CanModify(string user, string assignee)
+  bool CanModify(string? user, string? assignee)
   {
-    return user == assignee;
+    return !string.IsNullOrWhiteSpace(user)
+      && string.Equals(user.Trim(), assignee?.Trim(), StringComparison.OrdinalIgnoreCase);
   }
   public bool CanUserModify(int id, string user)
   {
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task == null) return false;
-    return task.Assignee == "none" ? true : CanModify(user, task.Assignee);
+    return string.Equals(task.Assignee?.Trim(), "none", StringComparison.OrdinalIgnoreCase)
+      || CanModify(user, task.Assignee);
   }
   public void AddTask(string description, PriorityLevel priority, string assignee, MyLinkedList<int> dependencyIds)
   {
@@ -72,13 +74,19 @@ public class TaskService : ITaskService
       _tasks.Add(newTask);
       _repository.SaveTasks(_tasks);
   }
-  public void UpdateTask(int id, string description, string assignee, string user)
+  public void UpdateTask(int id, string description, string assignee, string user, PriorityLevel? priority = null)
   {
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task != null)
     {
+      if (!CanUserModify(id, user))
+      {
+        throw new UnauthorizedAccessException("You cannot modify this task.");
+      }
+
       task.Description = description;
       task.Assignee = string.IsNullOrWhiteSpace(assignee) ? "none" : assignee;
+      if (priority.HasValue) task.Priority = priority.Value;
       _repository.SaveTasks(_tasks);
     }
   }
@@ -87,33 +95,67 @@ public class TaskService : ITaskService
     var task = _tasks.FindBy(id, (t, id) => t.Id.CompareTo(id));
     if (task != null)
     {
+      if (!CanUserModify(id, user))
+      {
+        throw new UnauthorizedAccessException("You cannot modify this task.");
+      }
+
       _tasks.Remove(task);
       _repository.SaveTasks(_tasks);
     }
   }
-  public void UpdateDependencies(int taskId, MyLinkedList<int> dependencyIds)
+  public void UpdateDependencies(int taskId, MyLinkedList<int> dependencyIds, string user)
   {
       var task = _tasks.FindBy(taskId, (t, id) => t.Id.CompareTo(id));
       if (task == null) return;
 
-      var validDeps = new MyLinkedList<int>();
+      if (!CanUserModify(taskId, user))
+      {
+        throw new UnauthorizedAccessException("You cannot modify this task.");
+      }
 
+      var validDeps = new MyLinkedList<int>();
+      var seen = new HashSet<int>();
       var it = dependencyIds.GetIterator();
       while (it.HasNext())
       {
           int depId = it.Next();
-
-          var exists = _tasks.FindBy(depId, (t, id) => t.Id.CompareTo(id)) != null;
-
-          if (exists && depId != taskId)
+          if (depId == taskId || !TaskExists(depId) || !seen.Add(depId))
           {
-              validDeps.Add(depId);
+              throw new InvalidOperationException($"Dependency {depId} is invalid.");
           }
+
+          if (DependsOn(depId, taskId, new HashSet<int>()))
+          {
+              throw new InvalidOperationException("The dependency would create a cycle.");
+          }
+
+          validDeps.Add(depId);
       }
 
       task.Dependencies = validDeps;
 
       _repository.SaveTasks(_tasks);
+  }
+
+  private bool DependsOn(int taskId, int dependencyId, HashSet<int> visited)
+  {
+      if (taskId == dependencyId) return true;
+      if (!visited.Add(taskId)) return false;
+
+      var task = _tasks.FindBy(taskId, (item, id) => item.Id.CompareTo(id));
+      if (task?.Dependencies == null) return false;
+
+      var dependencies = task.Dependencies.GetIterator();
+      while (dependencies.HasNext())
+      {
+          if (DependsOn(dependencies.Next(), dependencyId, visited))
+          {
+              return true;
+          }
+      }
+
+      return false;
   }
   public bool AreDependenciesDone(int taskId)
   {
@@ -138,6 +180,16 @@ public class TaskService : ITaskService
   {
       var task = _tasks.FindBy(id, (t, k) => t.Id.CompareTo(k));
       if (task == null) return;
+
+      if (!CanUserModify(id, user))
+      {
+          throw new UnauthorizedAccessException("You cannot modify this task.");
+      }
+
+      if (status == Status.Done && !AreDependenciesDone(id))
+      {
+          throw new InvalidOperationException("Complete this task's dependencies first.");
+      }
 
       task.Status = status;
 
