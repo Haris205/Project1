@@ -343,7 +343,7 @@ public class ConsoleTaskView : ITaskView
                       }
                   }
               }
-              _service.UpdateDependencies(taskId, deps);
+              _service.UpdateDependencies(taskId, deps, user);
               Console.WriteLine("Dependencies updated.");
               Console.WriteLine("\nPress any key to continue.");
               Console.ReadKey();
